@@ -15,7 +15,6 @@ A full-stack web application to explore, filter, review, and save your favorite 
 - [Getting Started](#getting-started)
 - [API Endpoints](#api-endpoints)
 - [Deployment](#deployment)
-- [Screenshots](#screenshots)
 
 ## ✨ Features
 
@@ -220,7 +219,7 @@ college-dashboard-application/
 3. Get connection string
 4. Update backend `.env` with Atlas connection string
 
-## 📸 Screenshots
+## 💠 Our Work
 
 ### Home Page
 Modern landing page with call-to-action and feature highlights.
@@ -271,8 +270,8 @@ This project is licensed under the MIT License.
 ## 👤 Author
 
 Your Name
-- GitHub: [@yourusername](https://github.com/yourusername)
-- LinkedIn: [Your Name](https://linkedin.com/in/yourprofile)
+- GitHub: [@yourusername](https://github.com/jayakrishna1509)
+- LinkedIn: [Your Name](https://www.linkedin.com/pillagolla-jayakrishna/)
 
 ## 🙏 Acknowledgments
 
