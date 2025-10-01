@@ -1,0 +1,225 @@
+/* Global responsive helpers and media queries - mobile-first */
+
+:root {
+  --max-width: 1200px;
+  --gap: 1.25rem;
+  --radius: 8px;
+  --bg: #ffffff;
+  --muted: #6b7280;
+  --accent: #2563eb;
+  --font-base: 16px;
+}
+
+* {
+  box-sizing: border-box;
+}
+html {
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial;
+  font-size: var(--font-base);
+  -webkit-font-smoothing: antialiased;
+}
+body {
+  margin: 0;
+  background: var(--bg);
+  color: #111827;
+  line-height: 1.4;
+}
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+button {
+  cursor: pointer;
+}
+
+/* Layout utilities */
+.container {
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+.row {
+  display: flex;
+  gap: var(--gap);
+  flex-wrap: wrap;
+}
+.col {
+  flex: 1 1 0;
+}
+
+/* Grid helpers */
+.grid {
+  display: grid;
+  gap: var(--gap);
+  grid-template-columns: repeat(3, 1fr);
+}
+.grid-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+.grid-1 {
+  grid-template-columns: 1fr;
+}
+
+/* Cards / common components */
+.card {
+  background: #fff;
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  box-shadow: 0 1px 4px rgba(2, 6, 23, 0.06);
+}
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 0;
+}
+.nav {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+.nav .nav-item {
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+}
+.sidebar {
+  width: 280px;
+  flex: 0 0 280px;
+}
+.content {
+  flex: 1;
+}
+
+/* Buttons */
+.btn {
+  background: var(--accent);
+  color: #fff;
+  border: 0;
+  padding: 0.6rem 1rem;
+  border-radius: 6px;
+  font-weight: 600;
+}
+.btn-ghost {
+  background: transparent;
+  border: 1px solid #e5e7eb;
+  color: var(--muted);
+}
+
+/* Tables / forms responsive tweaks */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.table th,
+.table td {
+  padding: 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid #e6e6f0;
+}
+.form-row {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+/* Media queries - adjust layout at common breakpoints */
+
+/* <= 1024px (tablet landscape) */
+@media (max-width: 1024px) {
+  :root {
+    --max-width: 980px;
+  }
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .sidebar {
+    width: 240px;
+    flex: 0 0 240px;
+  }
+  .header {
+    padding: 0.75rem 0;
+  }
+}
+
+/* <= 768px (tablet / small screens) */
+@media (max-width: 768px) {
+  :root {
+    --font-base: 15px;
+  }
+  .container {
+    padding: 0 0.875rem;
+  }
+  .grid {
+    grid-template-columns: 1fr;
+  }
+  .grid-2 {
+    grid-template-columns: 1fr;
+  }
+  .sidebar {
+    display: none;
+  } /* collapse sidebar to save space - show mobile menu instead */
+  .nav {
+    display: none;
+  } /* hide large nav, expect mobile nav shown through component */
+  .mobile-nav {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+  .header {
+    flex-direction: row;
+    align-items: center;
+  }
+  .card {
+    padding: 1rem;
+  }
+  .form-row {
+    flex-direction: column;
+  }
+}
+
+/* <= 480px (phones) */
+@media (max-width: 480px) {
+  :root {
+    --font-base: 14px;
+  }
+  .header {
+    padding: 0.5rem 0;
+  }
+  .card {
+    padding: 0.75rem;
+    border-radius: 6px;
+  }
+  .btn {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+  }
+  .table th,
+  .table td {
+    padding: 0.5rem;
+  }
+  .hero {
+    padding: 1rem 0;
+  }
+}
+
+/* Tiny helpers to force stacked behavior when needed */
+.stack-sm {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.hide-sm {
+  display: none;
+}
+
+/* When a specific component needs to reverse order on small screens */
+@media (max-width: 768px) {
+  .reverse-sm {
+    flex-direction: column-reverse;
+  }
+}
