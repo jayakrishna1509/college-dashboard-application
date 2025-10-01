@@ -269,9 +269,8 @@ This project is licensed under the MIT License.
 
 ## 👤 Author
 
-Your Name
-- GitHub: [@yourusername](https://github.com/jayakrishna1509)
-- LinkedIn: [Your Name](https://www.linkedin.com/pillagolla-jayakrishna/)
+- GitHub: [@jayakrishna1509](https://github.com/jayakrishna1509)
+- LinkedIn: [Pillagolla Jayakrishna](https://www.linkedin.com/in/pillagolla-jayakrishna/)
 
 ## 🙏 Acknowledgments
 
