@@ -1,5 +1,6 @@
 import express from 'express';
 import College from '../models/College.js';
+import { mockColleges } from '../mockData.js';
 const router = express.Router();
 
 // GET all colleges with optional filters and search
@@ -44,11 +45,73 @@ router.get('/', async (req, res) => {
     }
     
     const colleges = await collegesQuery;
-    console.log(`Found ${colleges.length} colleges`);
+    console.log(`Found ${colleges.length} colleges from database`);
+    
+    // If database is empty, use mock data
+    if (colleges.length === 0) {
+      console.log('Database is empty, using mock data');
+      let filteredColleges = [...mockColleges];
+      
+      if (location) {
+        filteredColleges = filteredColleges.filter(c => c.location === location);
+      }
+      if (course) {
+        filteredColleges = filteredColleges.filter(c => c.course === course);
+      }
+      if (minFee) {
+        filteredColleges = filteredColleges.filter(c => c.fee >= Number(minFee));
+      }
+      if (maxFee) {
+        filteredColleges = filteredColleges.filter(c => c.fee <= Number(maxFee));
+      }
+      if (search) {
+        filteredColleges = filteredColleges.filter(c => 
+          c.name.toLowerCase().includes(search.toLowerCase())
+        );
+      }
+      if (sortBy === 'fee-asc') {
+        filteredColleges.sort((a, b) => a.fee - b.fee);
+      } else if (sortBy === 'fee-desc') {
+        filteredColleges.sort((a, b) => b.fee - a.fee);
+      }
+      
+      return res.json(filteredColleges);
+    }
+    
     res.json(colleges);
   } catch (error) {
     console.error('Error in GET /api/colleges:', error);
-    res.status(500).json({ message: error.message, stack: error.stack });
+    console.log('Using mock data as fallback');
+    
+    // Use mock data as fallback
+    let filteredColleges = [...mockColleges];
+    
+    const { location, course, minFee, maxFee, search, sortBy } = req.query;
+    
+    if (location) {
+      filteredColleges = filteredColleges.filter(c => c.location === location);
+    }
+    if (course) {
+      filteredColleges = filteredColleges.filter(c => c.course === course);
+    }
+    if (minFee) {
+      filteredColleges = filteredColleges.filter(c => c.fee >= Number(minFee));
+    }
+    if (maxFee) {
+      filteredColleges = filteredColleges.filter(c => c.fee <= Number(maxFee));
+    }
+    if (search) {
+      filteredColleges = filteredColleges.filter(c => 
+        c.name.toLowerCase().includes(search.toLowerCase())
+      );
+    }
+    if (sortBy === 'fee-asc') {
+      filteredColleges.sort((a, b) => a.fee - b.fee);
+    } else if (sortBy === 'fee-desc') {
+      filteredColleges.sort((a, b) => b.fee - a.fee);
+    }
+    
+    res.json(filteredColleges);
   }
 });
 

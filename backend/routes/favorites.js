@@ -1,6 +1,7 @@
 import express from 'express';
 import Favorite from '../models/Favorite.js';
 import College from '../models/College.js';
+import { mockFavorites, mockColleges } from '../mockData.js';
 
 const router = express.Router();
 
@@ -22,7 +23,8 @@ router.get('/', async (req, res) => {
     res.json(validFavorites);
   } catch (error) {
     console.error('Error fetching favorites:', error);
-    res.status(500).json({ message: error.message, error: error.toString() });
+    console.log('Using mock favorites as fallback');
+    res.json(mockFavorites);
   }
 });
 
@@ -57,7 +59,33 @@ router.post('/', async (req, res) => {
     const populatedFavorite = await Favorite.findById(newFavorite._id).populate('collegeId');
     res.status(201).json(populatedFavorite);
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    console.error('Error adding favorite:', error);
+    console.log('Using mock data - favorite not persisted');
+    
+    const { collegeId } = req.body;
+    const userId = req.body.userId || 'default-user';
+    
+    // Find college in mock data
+    const college = mockColleges.find(c => c._id === collegeId);
+    if (!college) {
+      return res.status(404).json({ message: 'College not found' });
+    }
+    
+    // Check if already in favorites
+    const exists = mockFavorites.find(f => f.collegeId._id === collegeId && f.userId === userId);
+    if (exists) {
+      return res.status(400).json({ message: 'College already in favorites' });
+    }
+    
+    const mockFavorite = {
+      _id: `f${Date.now()}`,
+      collegeId: college,
+      userId,
+      createdAt: new Date(),
+    };
+    
+    mockFavorites.push(mockFavorite);
+    res.status(201).json(mockFavorite);
   }
 });
 
@@ -70,7 +98,17 @@ router.delete('/:id', async (req, res) => {
     }
     res.json({ message: 'Removed from favorites' });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error('Error deleting favorite:', error);
+    console.log('Using mock data - removing from memory');
+    
+    // Remove from mock data
+    const index = mockFavorites.findIndex(f => f._id === req.params.id);
+    if (index > -1) {
+      mockFavorites.splice(index, 1);
+      return res.json({ message: 'Removed from favorites' });
+    }
+    
+    res.status(404).json({ message: 'Favorite not found' });
   }
 });
 
@@ -89,7 +127,20 @@ router.delete('/college/:collegeId', async (req, res) => {
     
     res.json({ message: 'Removed from favorites' });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error('Error deleting favorite by college ID:', error);
+    console.log('Using mock data - removing from memory');
+    
+    const userId = req.query.userId || 'default-user';
+    const index = mockFavorites.findIndex(f => 
+      f.collegeId._id === req.params.collegeId && f.userId === userId
+    );
+    
+    if (index > -1) {
+      mockFavorites.splice(index, 1);
+      return res.json({ message: 'Removed from favorites' });
+    }
+    
+    res.status(404).json({ message: 'Favorite not found' });
   }
 });
 

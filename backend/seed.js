@@ -44,7 +44,7 @@ const colleges = [
 
 async function seedDatabase() {
   try {
-    await mongoose.connect(MONGODB_URI);
+    await mongoose.connect(MONGODB_URI, connectOptions);
     console.log("Connected to MongoDB");
 
     // Clear existing data

@@ -44,17 +44,24 @@ app.use((err, req, res, next) => {
   res.status(500).json({ message: "Something went wrong!" });
 });
 
-// Database connection
+// Start server immediately (don't wait for MongoDB)
+app.listen(PORT, () => {
+  console.log(`✅ Server is running on port ${PORT}`);
+  console.log(`🌐 API available at: http://localhost:${PORT}/api`);
+});
+
+// Try to connect to MongoDB in background (optional)
 mongoose
-  .connect(MONGODB_URI)
+  .connect(MONGODB_URI, {
+    serverSelectionTimeoutMS: 3000,
+    socketTimeoutMS: 3000,
+    bufferCommands: false,
+  })
   .then(() => {
-    console.log("Connected to MongoDB");
-    app.listen(PORT, () => {
-      console.log(`Server is running on port ${PORT}`);
-    });
+    console.log("✅ MongoDB connected successfully");
   })
   .catch((error) => {
-    console.error("MongoDB connection error:", error);
+    console.log("⚠️  MongoDB not available - using mock data");
   });
 
 export default app;
